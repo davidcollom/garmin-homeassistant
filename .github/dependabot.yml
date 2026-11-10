@@ -9,11 +9,16 @@ updates:
     schedule:
       interval: weekly
       day: monday
-    groups:
-      test-requirements:
-        patterns:
-          - "*"
+    # The updates are not grouped.  A group would move the Home Assistant
+    # version, the test harness and the tools of the bridge in one step, and
+    # the Home Assistant version is a deliberate decision, not an automatic
+    # one.
     ignore:
+      # The Home Assistant version and the test harness belong together.
+      # Moving them means testing the integration against a new Home
+      # Assistant, which is done on purpose and not by a bot.
+      - dependency-name: "homeassistant"
+      - dependency-name: "pytest-homeassistant-custom-component"
       # The Home Assistant test harness pins pytest 8.  A newer major release
       # changes the plugin API and breaks the test run.
       - dependency-name: pytest

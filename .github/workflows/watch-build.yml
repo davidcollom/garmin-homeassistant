@@ -7,7 +7,9 @@
 # The workflow produces the signed .iq files that people sideload and
 # attaches them to the GitHub release of the tag.  When the store keys are
 # configured the application is also submitted to the Connect IQ store.
-name: Watch build
+name: Watch application
+
+run-name: Build the watch application
 
 on:
   push:
