@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<!--
+    Garmin Home Assistant - Connect IQ watch application for the Edge 1040.
+
+    Licensed under the MIT licence, see LICENSE in the repository root.
+
+    Product ids:
+      edge1040   - Edge 1040
+      edge1040solar - Edge 1040 Solar
+
+    The Edge 1040 runs Connect IQ 6.0.0 and does not implement
+    Toybox.Notifications: the module is excluded from the supported device
+    list of
+    https://developer.garmin.com/connect-iq/api-docs/Toybox/Notifications.html
+    even though the module only asks for API level 5.1.0.  The build
+    therefore uses the toast presenter (variants/toast) and does not ask
+    for the "Notifications" permission at all.
+
+    minApiLevel is 6.0.0, the Connect IQ version of the Edge 1040.
+-->
+<iq:manifest version="3" xmlns:iq="http://www.garmin.com/xml/connectiq">
+    <iq:application
+        id="03d13e1a-5c72-4b13-8e77-ebb94f9c4518"
+        type="watch-app"
+        name="@Strings.AppName"
+        entry="MyApp"
+        launcherIcon="@Drawables.LauncherIcon"
+        minApiLevel="6.0.0">
+        <iq:products>
+            <iq:product id="edge1040"/>
+            <iq:product id="edge1040solar"/>
+        </iq:products>
+        <iq:permissions>
+            <iq:uses-permission id="Communications"/>
+            <iq:uses-permission id="Background"/>
+        </iq:permissions>
+        <iq:languages>
+            <iq:language>eng</iq:language>
+        </iq:languages>
+    </iq:application>
+</iq:manifest>

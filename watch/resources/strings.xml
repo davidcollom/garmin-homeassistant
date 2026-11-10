@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Strings for the Garmin Home Assistant watch application.
+
+    Strings are referenced from the source with Rez.Strings.<id> and loaded
+    with Application.loadResource().  The @Strings.* references used by
+    resources/settings/settings.xml are resolved at build time.
+-->
+<strings>
+    <string id="AppName">Garmin Home Assistant</string>
+
+    <!-- Application settings labels (also used by resources/settings/settings.xml) -->
+    <string id="BridgeUrlTitle">Bridge URL</string>
+    <string id="BridgeTokenTitle">Bridge token</string>
+    <string id="PollIntervalTitle">Poll interval (seconds)</string>
+    <string id="ShowAreasTitle">Group entities by area</string>
+    <string id="ConfirmCommandsTitle">Confirm commands</string>
+
+    <!-- Screen titles -->
+    <string id="Entities">Entities</string>
+    <string id="Inbox">Inbox</string>
+    <string id="Status">Status</string>
+
+    <!-- Commands -->
+    <string id="Toggle">Toggle</string>
+    <string id="TurnOn">On</string>
+    <string id="TurnOff">Off</string>
+    <string id="Open">Open</string>
+    <string id="Close">Close</string>
+    <string id="Brighter">Brighter</string>
+    <string id="Dimmer">Dimmer</string>
+    <string id="Increase">Raise</string>
+    <string id="Decrease">Lower</string>
+    <string id="Refresh">Refresh</string>
+    <string id="Back">Back</string>
+    <string id="Acknowledge">Acknowledge</string>
+
+    <!-- Runtime strings -->
+    <string id="Loading">Loading&#8230;</string>
+    <string id="NotConfigured">Set the bridge URL in Garmin Connect</string>
+    <string id="NoEntities">No entities available</string>
+    <string id="NoNotifications">No notifications</string>
+    <string id="Offline">Offline</string>
+    <string id="Online">Online</string>
+    <string id="Connecting">Connecting&#8230;</string>
+    <string id="UnnamedEntity">Entity</string>
+    <string id="UnknownArea">Other</string>
+</strings>

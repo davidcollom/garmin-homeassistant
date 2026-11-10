@@ -1,0 +1,111 @@
+{
+  "title": "Garmin Home Assistant",
+  "config": {
+    "step": {
+      "user": {
+        "title": "Connect to the Garmin bridge",
+        "description": "Enter the address of the Garmin bridge and the access token it was started with.",
+        "data": {
+          "bridge_url": "Bridge URL",
+          "bridge_token": "Bridge token"
+        },
+        "data_description": {
+          "bridge_url": "The URL the Garmin watches can reach, for example https://garmin-bridge.example.com.",
+          "bridge_token": "The value of GARMIN_BRIDGE_TOKEN on the bridge."
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Could not reach the bridge. Check the URL and the token."
+    },
+    "abort": {
+      "already_configured": "This bridge is already configured."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Garmin bridge options",
+        "description": "Choose what the watches can see and how notifications are delivered.",
+        "data": {
+          "exposed_entities": "Exposed entities",
+          "blocked_entities": "Blocked entities",
+          "phone_notify_service": "Phone notification service",
+          "create_mirror_switches": "Create mirror switches",
+          "scan_interval": "Update interval"
+        },
+        "data_description": {
+          "exposed_entities": "Leave empty to expose every controllable entity.",
+          "blocked_entities": "Entities that are never shown on the watch, even when they are exposed.",
+          "phone_notify_service": "The notify service used to mirror messages to the paired phone, for example mobile_app_iphone. The Garmin Connect app then pushes them to the watch.",
+          "create_mirror_switches": "Create a switch in Home Assistant for every entity the watch can toggle.",
+          "scan_interval": "How often the integration asks the bridge for the watch and entity state."
+        }
+      }
+    }
+  },
+  "services": {
+    "send_notification": {
+      "name": "Send notification",
+      "description": "Queue a notification for the connected Garmin watches.",
+      "fields": {
+        "message": {
+          "name": "Message",
+          "description": "The body of the notification."
+        },
+        "title": {
+          "name": "Title",
+          "description": "The title shown above the message on the watch."
+        },
+        "priority": {
+          "name": "Priority",
+          "description": "How prominent the notification is."
+        },
+        "actions": {
+          "name": "Actions",
+          "description": "Buttons the watch shows underneath the message."
+        },
+        "entity_id": {
+          "name": "Entity",
+          "description": "The entity this notification is about."
+        },
+        "watch_id": {
+          "name": "Watches",
+          "description": "Limit the notification to these watch ids."
+        }
+      }
+    },
+    "run_command": {
+      "name": "Run command",
+      "description": "Run a command through the bridge, the same mechanism the watch uses.",
+      "fields": {
+        "command": {
+          "name": "Command",
+          "description": "toggle, turn_on, turn_off, open, close, set_level, set_value or service."
+        },
+        "entity_id": {
+          "name": "Entity",
+          "description": "The entity the command applies to."
+        },
+        "data": {
+          "name": "Data",
+          "description": "Extra data for the command."
+        }
+      }
+    },
+    "set_exposed_entities": {
+      "name": "Set exposed entities",
+      "description": "Choose which entities the watches can see and control.",
+      "fields": {
+        "entity_ids": {
+          "name": "Entities",
+          "description": "The entity ids the watches may control."
+        }
+      }
+    },
+    "refresh": {
+      "name": "Refresh",
+      "description": "Ask the bridge to re-read the Home Assistant states right away."
+    }
+  }
+}

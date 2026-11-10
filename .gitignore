@@ -1,0 +1,38 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.venv/
+.venv-ha/
+venv/
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Home Assistant config
+config/
+home-assistant*.log*
+.storage/
+
+# Connect IQ
+watch/*.prg
+watch/*.zip
+watch/build/
+watch/.monkeyc/
+*.developer_key
+
+# Secrets / env
+.env
+.env.*
+!.env.example
+
+# Editors / OS
+.idea/
+.vscode/
+.DS_Store
+*.swp

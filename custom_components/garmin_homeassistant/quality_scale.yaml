@@ -1,0 +1,79 @@
+# Quality scale for the Garmin Home Assistant integration.
+#
+# The integration targets the Bronze tier.  Every rule of every tier is
+# listed so that the file stays valid when Home Assistant adds rules.
+#
+# See https://contributors.home-assistant.io/core/quality-scale/
+
+rules:
+  # Bronze
+  action-setup: todo
+  appropriate-polling: done
+  brands: done
+  common-modules: done
+  config-flow: done
+  config-flow-test-coverage: todo
+  dependency-transparency:
+    status: exempt
+    comment: >-
+      The integration pulls in no third party packages.  Everything it uses
+      ships with Home Assistant, so the manifest has an empty requirements
+      list.
+  docs-actions: todo
+  docs-conditions: done
+  docs-high-level-description: done
+  docs-installation-instructions: done
+  docs-removal-instructions: done
+  docs-triggers: done
+  entity-event-setup:
+    status: exempt
+    comment: >-
+      No entity of this integration uses a state trigger.  The watch sensors
+      are refreshed by a data coordinator that polls the bridge.
+  entity-unique-id: done
+  has-entity-name: done
+  runtime-data: done
+  test-before-configure: done
+  test-before-setup: done
+  unique-config-entry: done
+  # Silver
+  action-exceptions: todo
+  config-entry-unloading: done
+  docs-configuration-parameters: done
+  docs-installation-parameters: done
+  entity-unavailable: done
+  integration-owner: done
+  log-when-unavailable: todo
+  parallel-updates: done
+  reauthentication-flow: todo
+  test-coverage: todo
+  # Gold
+  devices: done
+  diagnostics: todo
+  discovery: todo
+  discovery-update-info:
+    status: exempt
+    comment: >-
+      The bridge is not discovered automatically.  The user enters its URL
+      and token by hand, so there is no discovery information to update.
+  docs-data-update: todo
+  docs-examples: done
+  docs-known-limitations: done
+  docs-supported-devices: done
+  docs-supported-functions: done
+  docs-troubleshooting: done
+  docs-use-cases: done
+  dynamic-devices: done
+  entity-category: todo
+  entity-device-class: done
+  entity-disabled-by-default: todo
+  entity-translations: todo
+  exception-translations: todo
+  icon-translations: todo
+  reconfiguration-flow: todo
+  repair-issues: todo
+  stale-devices: todo
+  # Platinum
+  async-dependency: todo
+  inject-websession: todo
+  strict-typing: todo

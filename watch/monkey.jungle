@@ -1,0 +1,13 @@
+# Jungle file for the Garmin Home Assistant watch application.
+#
+# The Venu 4 build uses the Toybox.Notifications based presenter; the Edge
+# 1040 build (monkey-edge.jungle) swaps in the toast based one.
+#
+# The presenter lives in variants/<name>/NotificationPresenter.mc and is
+# added to the source path of the base configuration.  A class has to be
+# defined exactly once, so only one of the two variants can be part of a
+# build.
+project.manifest = manifest.xml
+project.typecheck = strict
+base.sourcePath = source;variants/notifications
+base.resourcePath = resources

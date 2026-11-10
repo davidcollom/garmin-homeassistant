@@ -1,0 +1,10 @@
+# Jungle file for the Garmin Home Assistant watch application on the
+# Edge 1040 and the Edge 1040 Solar.
+#
+# The Edge does not implement Toybox.Notifications, so this build uses the
+# toast based presenter and the manifest without the "Notifications"
+# permission.  Everything else is identical to the Venu build.
+project.manifest = manifest-edge.xml
+project.typecheck = strict
+base.sourcePath = source;variants/toast
+base.resourcePath = resources

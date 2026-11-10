@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    User editable application settings.
+
+    The propertyKey refers to a property from resources/settings/properties.xml
+    and the title refers to a string from resources/strings.xml.
+-->
+<settings>
+    <setting propertyKey="@Properties.BridgeUrl" title="@Strings.BridgeUrlTitle">
+        <settingConfig type="text"/>
+    </setting>
+    <setting propertyKey="@Properties.BridgeToken" title="@Strings.BridgeTokenTitle">
+        <settingConfig type="text"/>
+    </setting>
+    <setting propertyKey="@Properties.PollInterval" title="@Strings.PollIntervalTitle">
+        <settingConfig type="text"/>
+    </setting>
+    <setting propertyKey="@Properties.ShowAreas" title="@Strings.ShowAreasTitle">
+        <settingConfig type="text"/>
+    </setting>
+    <setting propertyKey="@Properties.ConfirmCommands" title="@Strings.ConfirmCommandsTitle">
+        <settingConfig type="text"/>
+    </setting>
+</settings>

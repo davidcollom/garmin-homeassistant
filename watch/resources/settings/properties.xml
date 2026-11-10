@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Application properties.
+
+    The values below are the build time defaults.  Every property listed here
+    is surfaced to the user through resources/settings/settings.xml and can be
+    edited in the Garmin Connect mobile app (My Apps -> Garmin Home Assistant
+    -> App Settings) or with Garmin Express on the desktop.
+
+    The property values are read at runtime with
+    Application.Properties.getValue().
+-->
+<properties>
+    <!-- Base URL of the bridge, including the scheme and port. -->
+    <property id="BridgeUrl" type="string">http://homeassistant.local:8099</property>
+    <!-- Shared bootstrap token.  The bridge hands out a per-watch token on the
+         first registration, after which the shared token is no longer used. -->
+    <property id="BridgeToken" type="string"></property>
+    <!-- Seconds between foreground polls.  0 means "ask the bridge". -->
+    <property id="PollInterval" type="number">30</property>
+    <!-- Group the entity list by Home Assistant area. -->
+    <property id="ShowAreas" type="boolean">true</property>
+    <!-- Ask for confirmation before running a command. -->
+    <property id="ConfirmCommands" type="boolean">false</property>
+</properties>

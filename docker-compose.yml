@@ -1,0 +1,47 @@
+# Example deployment of the Garmin Home Assistant bridge.
+#
+# Copy this file to "docker-compose.yml", fill in the tokens and run
+#
+#     docker compose up -d
+#
+# The bridge needs to be reachable from the watch, so it has to listen on the
+# network of the phone and not only on localhost.
+
+services:
+  garmin-bridge:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: garmin-homeassistant-bridge:latest
+    container_name: garmin-bridge
+    restart: unless-stopped
+    ports:
+      - "8099:8099"
+    environment:
+      # The address Home Assistant answers on, as seen from the bridge.
+      HA_URL: "http://homeassistant:8123"
+      # A long-lived access token from the Home Assistant profile page.
+      HA_TOKEN: "REPLACE_WITH_YOUR_HA_TOKEN"
+      # The token the Home Assistant integration uses to talk to the bridge.
+      GARMIN_BRIDGE_TOKEN: "REPLACE_WITH_A_LONG_RANDOM_STRING"
+      # The token the watch app uses.  Defaults to GARMIN_BRIDGE_TOKEN.
+      GARMIN_WATCH_TOKEN: "REPLACE_WITH_ANOTHER_LONG_RANDOM_STRING"
+      # Seconds between two reads of the Home Assistant states.
+      GARMIN_POLL_INTERVAL: "30"
+      # Seconds after which a watch is reported as offline.
+      GARMIN_WATCH_STALE_AFTER: "900"
+      # Optional: only these entities are exposed to the watches.
+      # GARMIN_ENTITY_ALLOWLIST: "light.kitchen,lock.front_door"
+      # Optional: these entities are never exposed to the watches.
+      # GARMIN_ENTITY_BLOCKLIST: "camera.front_door"
+      GARMIN_LOG_LEVEL: "INFO"
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://127.0.0.1:8099/v1/health', timeout=4).status == 200 else 1)"
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s

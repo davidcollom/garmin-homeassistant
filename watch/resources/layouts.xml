@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Page layouts.
+
+    Only the fixed chrome of the application lives here: the title bar and
+    the status bar.  Everything that depends on the content, that is the rows of
+    the entity list and the buttons of the detail screen, is built in code,
+    because the number of rows that fit on the screen depends on the
+    geometry of the device (390 x 390 round for the Venu 4, 282 x 470
+    rectangular for the Edge 1040).
+
+    The labels are only used for their font and colour; the view sets their
+    text and their position, see MainView.onLayout().
+
+    See https://developer.garmin.com/connect-iq/articles/core-topics/Layouts.html
+-->
+<layouts>
+    <layout id="main">
+        <label id="header" text="" x="0" y="0" font="Gfx.FONT_SMALL" color="Gfx.COLOR_WHITE" />
+        <label id="footer" text="" x="0" y="0" font="Gfx.FONT_XTINY" color="Gfx.COLOR_LT_GRAY" />
+    </layout>
+</layouts>

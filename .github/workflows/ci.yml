@@ -1,0 +1,124 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  bridge:
+    name: Bridge
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: bridge
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: pip
+          cache-dependency-path: requirements/bridge-test.txt
+
+      - name: Install the dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e ".[test]"
+
+      - name: Run the tests
+        run: python -m pytest tests -q --cov=garmin_bridge --cov-report=term-missing
+
+      - name: Lint
+        run: |
+          python -m ruff check src tests
+          python -m ruff format --check src tests
+
+      - name: Type check
+        run: python -m mypy src
+
+  homeassistant:
+    name: Home Assistant integration
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: requirements/ha-test.txt
+
+      - name: Install the dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements/ha-test.txt
+          python -m pip install "ruff==0.8.4" "mypy==1.13.0"
+
+      - name: Run the tests
+        run: python -m pytest custom_components/garmin_homeassistant/tests -q
+
+      - name: Lint
+        run: |
+          python -m ruff check custom_components scripts
+          python -m ruff format --check custom_components scripts
+
+      - name: Type check
+        run: python -m mypy custom_components scripts
+
+  watch:
+    name: Connect IQ sources
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Check the Monkey C sources
+        run: python scripts/check_ciq.py
+
+  hassfest:
+    name: Hassfest
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: home-assistant/actions/hassfest@master
+
+  hacs:
+    name: HACS
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: hacs/action@main
+        with:
+          category: integration
+          ignore: head
+
+  docker:
+    name: Container image
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: docker/setup-buildx-action@v3
+
+      - name: Build the image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: false
+          tags: garmin-homeassistant-bridge:ci
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

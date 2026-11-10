@@ -1,0 +1,125 @@
+# Services offered by the Garmin Home Assistant integration.
+
+send_notification:
+  name: Send notification
+  description: >-
+    Queue a notification for the connected Garmin watches. The message is
+    delivered the next time the watch app polls the bridge. When a phone
+    notification service is configured the message is mirrored there as well,
+    which lets the Garmin Connect app push it to the watch immediately.
+  fields:
+    message:
+      name: Message
+      description: The body of the notification.
+      required: true
+      example: The washing machine has finished.
+      selector:
+        text:
+    title:
+      name: Title
+      description: The title shown above the message on the watch.
+      default: Home Assistant
+      example: Laundry
+      selector:
+        text:
+    priority:
+      name: Priority
+      description: >-
+        How prominent the notification is. High priority notifications are
+        shown with an accent colour on devices that support it.
+      default: normal
+      selector:
+        select:
+          options:
+            - low
+            - normal
+            - high
+    actions:
+      name: Actions
+      description: >-
+        Buttons the watch shows underneath the message. Choosing one
+        acknowledges the notification and fires a
+        garmin_homeassistant_watch_action event on the Home Assistant bus.
+      example: '[{"id": "ack", "label": "Acknowledge"}]'
+      selector:
+        object:
+    entity_id:
+      name: Entity
+      description: >-
+        The entity this notification is about. The watch uses it to offer a
+        shortcut to the entity.
+      example: binary_sensor.front_door
+      selector:
+        entity:
+    watch_id:
+      name: Watches
+      description: >-
+        Limit the notification to the watches with these ids. Leave empty to
+        send it to every connected watch.
+      example: '["edge1040-abcdef"]'
+      selector:
+        object:
+
+run_command:
+  name: Run command
+  description: >-
+    Run a command through the bridge. This is the same mechanism the watch
+    uses, which makes it handy for testing automations.
+  fields:
+    command:
+      name: Command
+      description: >-
+        The command to run: toggle, turn_on, turn_off, open, close,
+        set_level, set_value or service.
+      required: true
+      example: toggle
+      selector:
+        text:
+    entity_id:
+      name: Entity
+      description: The entity the command applies to.
+      example: light.kitchen
+      selector:
+        entity:
+    data:
+      name: Data
+      description: >-
+        Extra data for the command. set_level expects a value, a service
+        command expects the payload of the service call.
+      example: '{"value": 40}'
+      selector:
+        object:
+  response:
+    optional: true
+    fields:
+      ok:
+        name: Success
+        description: Whether the command reached Home Assistant.
+        type: boolean
+      message:
+        name: Message
+        description: A short description of the result.
+        type: string
+      state:
+        name: State
+        description: The state of the entity after the command.
+        type: string
+
+set_exposed_entities:
+  name: Set exposed entities
+  description: >-
+    Choose which entities the watches can see and control. An empty list
+    exposes every controllable entity.
+  fields:
+    entity_ids:
+      name: Entities
+      description: The entity ids the watches may control.
+      example: '["light.kitchen", "lock.front_door"]'
+      selector:
+        object:
+
+refresh:
+  name: Refresh
+  description: >-
+    Ask the bridge to re-read the Home Assistant states right away instead of
+    waiting for the next poll.
