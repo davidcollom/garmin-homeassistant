@@ -93,9 +93,13 @@ The full guide is in [`docs/installation.md`](docs/installation.md).  In short:
    folder of your Home Assistant configuration.  Add the integration and
    enter the URL and the `GARMIN_BRIDGE_TOKEN` of the bridge.
 
-3. Build the watch application with the [Connect IQ SDK] and install it on
-   the watch.  Set the bridge URL and the `GARMIN_WATCH_TOKEN` in the
-   settings of the application.
+3. Install the watch application.  The [releases] of this repository carry
+   the signed `.iq` file for your watch: download it and copy it into the
+   `GARMIN/APPS` folder of the watch over USB.  Then set the bridge URL and
+   the `GARMIN_WATCH_TOKEN` in the settings of the application.
+
+   The application is also published in the [Garmin Connect IQ store], where
+   the Garmin Connect app on the phone installs it on the watch.
 
 ## Documentation
 
@@ -127,6 +131,11 @@ pipeline runs a static check of the Monkey C sources, the XML resources and
 the manifest.  This is a real limitation and it is documented as such in
 [`docs/development.md`](docs/development.md).
 
+The signed application files of a release are built by a self hosted runner
+that has the SDK installed, because the SDK cannot be downloaded by a GitHub
+hosted runner.  The setup of that runner is in
+[`watch/README.md`](watch/README.md).
+
 ## Licence
 
 MIT, see [LICENSE](LICENSE).  This project is not affiliated with Garmin or
@@ -136,3 +145,5 @@ with Home Assistant.
 [Connect IQ]: https://developer.garmin.com/connect-iq/
 [Connect IQ SDK]: https://developer.garmin.com/connect-iq/download/
 [HACS]: https://hacs.xyz
+[releases]: https://github.com/davidcollom/garmin-homeassistant/releases
+[Garmin Connect IQ store]: https://apps.garmin.com

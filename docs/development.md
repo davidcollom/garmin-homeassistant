@@ -159,6 +159,13 @@ The runtime refuses a background service that uses a class that is not.
 | HACS | The validation of the repository by HACS. |
 | Container image | The build of the bridge image. |
 
+Two more workflows publish the software:
+
+| Workflow | When | What it does |
+| --- | --- | --- |
+| `watch-build.yml` | A tag or a published release | Builds the watch application on a self hosted runner with the Connect IQ SDK and attaches the files to the release. |
+| `release.yml` | A tag | Builds the image of the bridge and pushes it to the GitHub container registry. |
+
 ## The limitations of the pipeline
 
 The watch application is **not compiled** by the pipeline.  The Connect IQ
@@ -172,6 +179,10 @@ does not catch a type error or a wrong argument.
 
 Every change to the watch application should therefore be tested on a real
 device before it is released.
+
+The release of the watch application is built by a **self hosted runner**
+that has the SDK installed.  The setup of that runner is described in
+[`../watch/README.md`](../watch/README.md).
 
 ## The house style
 

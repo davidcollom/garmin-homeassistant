@@ -50,6 +50,17 @@ docker run -d --name garmin-bridge \
     garmin-homeassistant-bridge:latest
 ```
 
+### With the published image
+
+Every release publishes the image to the GitHub container registry, so it can
+be pulled without building it:
+
+```bash
+docker pull ghcr.io/davidcollom/garmin-homeassistant/bridge:latest
+```
+
+Use that image in the compose file instead of building it.
+
 ### From the sources
 
 Python 3.11 or newer is required.
@@ -154,45 +165,71 @@ The options of the integration are described in
 
 ## 3. The watch application
 
-The watch application is a Connect IQ program.  Building it needs the
-[Connect IQ SDK], which is proprietary and has to be downloaded from Garmin.
+The watch application is a Connect IQ program.  There are two ways to get it
+onto the watch: download the signed file from the release of this
+repository, or install it from the Garmin Connect IQ store.
 
-### Building
+### From the release of this repository
+
+Every release of this repository carries the two signed application files as
+attachments:
+
+| File | Devices | Notifications |
+| --- | --- | --- |
+| `venu.iq` | Venu 4 41 mm and 45 mm | with action buttons |
+| `edge.iq` | Edge 1040 and Edge 1040 Solar | in the inbox of the application |
+
+Download the file that matches your watch from the [releases] page and
+install it:
+
+1. Connect the watch to a computer over USB.  The watch appears as a drive.
+2. Copy the `.iq` file into the `GARMIN/APPS` folder of that drive.
+3. Eject the watch and restart it.
+
+The application is now in the list of applications of the watch.  A sideloaded
+application carries a small symbol, because it did not come from the Garmin
+Connect IQ store.
+
+To update, copy the new file over the old one and restart the watch.  The
+settings and the watch token survive the update.
+
+> The name of the file does not matter.  Naming it after the application id
+> of the manifest, for example `03d13e1a-5c72-4b13-8e77-ebb94f9c4518.iq`,
+> makes the versions easy to tell apart.
+
+### From the Garmin Connect IQ store
+
+When the application is published in the [Garmin Connect IQ store], install
+it with the Garmin Connect app on the phone: *My Apps* → *Connect IQ* →
+*Garmin Home Assistant* → *Install*.  The Garmin Connect app pushes the
+application to the watch over Bluetooth and keeps it up to date.
+
+The store route needs an account of the Garmin Connect IQ developer program,
+which the maintainer of this repository uses to publish the application.
+
+### Building it yourself
+
+Building needs the [Connect IQ SDK], which is proprietary and has to be
+downloaded from Garmin.  It also needs a developer key of the Garmin
+Connect IQ developer program.
 
 ```bash
 cd watch
 export MONKEYC="$HOME/connectiq/bin/monkeyc"
 export GARMIN_DEVELOPER_KEY="$HOME/.garmin/developer_key"
-./build.sh venu    # the Venu 4
-./build.sh edge    # the Edge 1040 and the Edge 1040 Solar
-./build.sh both    # both
+./build.sh venu           # the Venu 4, a signed .iq file
+./build.sh edge           # the Edge 1040 and the Edge 1040 Solar
+./build.sh both           # both
+./build.sh both release   # both as .prg files for the store
 ```
 
-The result is a `.prg` file in `watch/build/`.
+The result is in `watch/build/`.  A debug build is a signed `.iq` file that
+can be sideloaded, a release build is an unsigned `.prg` file for the
+Connect IQ store.
 
-### Sideloading a debug build
-
-A debug build is signed with your developer key and can be installed
-directly:
-
-```bash
-monkeyc -f watch/monkey.jungle -d -k "$GARMIN_DEVELOPER_KEY" \
-    -o watch/build/venu.prg
-```
-
-Connect the watch over USB and run:
-
-```bash
-garmin-install watch/build/venu.prg
-```
-
-The `garmin-install` tool is part of the SDK.
-
-### Installing a release build
-
-Upload the `.prg` file to the [Garmin Connect IQ store] and install it from
-the Garmin Connect IQ app on your phone, or from Garmin Express on the
-desktop.  The store page needs the application id from the manifest.
+The release of this repository is built by a self hosted runner that has the
+SDK installed, because the SDK cannot be downloaded by a GitHub hosted
+runner.  See [`../watch/README.md`](../watch/README.md) for the details.
 
 ### Configuring the application
 
@@ -251,3 +288,4 @@ The bridge keeps nothing on disk, so removing it removes all of its state.
 
 [Connect IQ SDK]: https://developer.garmin.com/connect-iq/download/
 [Garmin Connect IQ store]: https://apps.garmin.com
+[releases]: https://github.com/davidcollom/garmin-homeassistant/releases

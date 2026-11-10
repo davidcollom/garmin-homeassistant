@@ -5,6 +5,22 @@ talks to the [bridge](../bridge) over plain HTTP and lets you control your
 Home Assistant entities and read the notifications that Home Assistant sends
 to the watch.
 
+## Where the application comes from
+
+The application is published in two ways.
+
+* **The releases of this repository** carry the signed `.iq` files as
+  attachments.  People download the file for their watch and copy it into
+  the `GARMIN/APPS` folder of the watch over USB.  This works for everybody
+  and needs no Garmin account.  The instructions are in
+  [`docs/installation.md`](../docs/installation.md).
+* **The Garmin Connect IQ store** carries the application as well.  People
+  install it with the Garmin Connect app on their phone, which pushes it to
+  the watch over Bluetooth.  Publishing in the store needs an account of
+  the Garmin Connect IQ developer program and a review by Garmin.
+
+Both are built from the same sources.
+
 ## Requirements
 
 * The [Connect IQ SDK](https://developer.garmin.com/connect-iq/download/).
@@ -25,9 +41,73 @@ export GARMIN_DEVELOPER_KEY="$HOME/.garmin/developer_key"
 ./build.sh all      # both variants and a fresh launcher icon
 ```
 
-The result is a `.prg` file in `watch/build/`.  Copy it to the watch and
+The result is a `.iq` file in `watch/build/`.  Copy it to the watch and
 install it with the [Garmin Connect IQ app](https://apps.garmin.com) or
 sideload it with the `monkeyc` command from the SDK.
+
+A second argument selects the kind of build:
+
+```bash
+./build.sh both release
+```
+
+A release build is an unsigned `.prg` file.  It is what is submitted to the
+Connect IQ store, which signs it.
+
+## Publishing
+
+### The release of this repository
+
+The `.github/workflows/watch-build.yml` workflow builds the application and
+attaches the files to the release of a tag.
+
+The workflow cannot run on a GitHub hosted runner, because the Connect IQ
+SDK cannot be downloaded there.  It runs on a **self hosted runner** with
+the SDK installed instead:
+
+1. Install the [Connect IQ SDK](https://developer.garmin.com/connect-iq/download/)
+   on a machine that is always on.
+2. Register it as a GitHub Actions runner with the label `connectiq`:
+
+   ```bash
+   ./config.sh --url https://github.com/davidcollom/garmin-homeassistant \
+       --token <the runner token of the repository> --labels connectiq
+   ./run.sh
+   ```
+
+3. Add the secrets of the repository:
+
+   | Secret | Content |
+   | --- | --- |
+   | `GARMIN_DEVELOPER_KEY` | The developer key, base64 encoded. |
+   | `GARMIN_STORE_API_KEY` | The API key of the Connect IQ developer program.  Only needed for the store. |
+   | `GARMIN_STORE_DISTRIBUTION_KEY` | The distribution key, base64 encoded.  Only needed for the store. |
+
+4. Tag a release:
+
+   ```bash
+   git tag v0.1.0 && git push origin v0.1.0
+   ```
+
+The workflow then builds both variants, attaches `venu.iq` and `edge.iq` to
+the release and, when the store keys are present, submits the release
+builds to the Connect IQ store.
+
+### The Connect IQ store
+
+The store needs an account of the Garmin Connect IQ developer program.  With
+that account the application id of the manifest is registered, and the
+`.prg` files are uploaded with the SDK:
+
+```bash
+monkeyc publish -o watch/build/venu.prg \
+    --api-key "$GARMIN_STORE_API_KEY" \
+    --key "$HOME/.garmin/distribution_key"
+```
+
+Garmin reviews the submission and publishes the application in the store.
+The beta channel of the store is an alternative: publish a beta build and
+people can opt in from the Garmin Connect app.
 
 ## Layout
 
