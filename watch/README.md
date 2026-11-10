@@ -83,7 +83,16 @@ the SDK installed instead:
    | `GARMIN_STORE_API_KEY` | The API key of the Connect IQ developer program.  Only needed for the store. |
    | `GARMIN_STORE_DISTRIBUTION_KEY` | The distribution key, base64 encoded.  Only needed for the store. |
 
-4. Tag a release:
+   The base64 encoding is made with `base64 -w0 developer_key`.
+
+4. Add the variable of the repository, if the `monkeyc` binary is not on the
+   path of the runner:
+
+   | Variable | Content |
+   | --- | --- |
+   | `MONKEYC` | The path of the `monkeyc` binary, for example `/opt/connectiq/bin/monkeyc`. |
+
+5. Tag a release:
 
    ```bash
    git tag v0.1.0 && git push origin v0.1.0
