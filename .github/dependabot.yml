@@ -28,15 +28,11 @@ updates:
       - dependency-name: pytest-socket
       - dependency-name: respx
       # josepy 2 drops the API that acme uses, which breaks the import of
-      # hass_nabucasa.
+      # hass_nabucasa.  The newer releases of acme do not work with the
+      # pinned josepy either, so both stay where they are.
       - dependency-name: josepy
-        update-types:
-          - version-update:semver-major
       - dependency-name: acme
-        update-types:
-          - version-update:semver-major
-      # pycares 5 starts a background thread that outlives the event loop,
-      # which the Home Assistant test harness reports as a leaked thread.
+      # pycares 4.11 starts a background thread that outlives the event
+      # loop, which the Home Assistant test harness reports as a leaked
+      # thread.
       - dependency-name: pycares
-        update-types:
-          - version-update:semver-major
