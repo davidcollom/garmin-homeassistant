@@ -97,7 +97,7 @@ jobs:
         run: |
           for prg in watch/build/*.prg; do
             echo "==> publishing ${prg}"
-            "${MONKEYC}" publish \
+            "${MONKEYC:-monkeyc}" publish \
               -o "${prg}" \
               --api-key "${GARMIN_STORE_API_KEY}" \
               --key "$RUNNER_TEMP/distribution_key"
