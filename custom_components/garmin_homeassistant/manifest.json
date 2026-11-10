@@ -1,6 +1,7 @@
 {
   "domain": "garmin_homeassistant",
   "name": "Garmin Home Assistant",
+  "categories": ["hubs_protocols", "messaging_notifications", "sensors"],
   "codeowners": ["@davidcollom"],
   "config_flow": true,
   "documentation": "https://github.com/davidcollom/garmin-homeassistant",

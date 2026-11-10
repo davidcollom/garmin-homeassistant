@@ -6,6 +6,10 @@
 # pycares is held below 5.0: version 5 starts a background thread that
 # survives the event loop shutdown, which the Home Assistant test harness
 # reports as a leaked thread.
+#
+# acme and josepy are pinned to the pair that Home Assistant 2024.11 was
+# released with.  Newer josepy releases drop the API that acme uses, which
+# breaks the import of hass_nabucasa.
 pytest-homeassistant-custom-component==0.13.180
 pytest-asyncio==0.24.0
 pytest-aiohttp==1.0.5
@@ -13,3 +17,5 @@ pytest-cov==5.0.0
 pytest-socket==0.7.0
 respx==0.21.1
 pycares<5
+acme==2.11.0
+josepy==1.14.0

@@ -42,6 +42,9 @@ from .helpers import split_service_name
 
 _LOGGER = logging.getLogger(__name__)
 
+# The integration is only set up from a config entry, there is no YAML setup.
+CONFIG_SCHEMA = cv.config_entry_only_config_schema(DOMAIN)
+
 PLATFORMS: list[Platform] = [
     Platform.SENSOR,
     Platform.BINARY_SENSOR,

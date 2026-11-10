@@ -89,21 +89,6 @@ run_command:
       example: '{"value": 40}'
       selector:
         object:
-  response:
-    optional: true
-    fields:
-      ok:
-        name: Success
-        description: Whether the command reached Home Assistant.
-        type: boolean
-      message:
-        name: Message
-        description: A short description of the result.
-        type: string
-      state:
-        name: State
-        description: The state of the entity after the command.
-        type: string
 
 set_exposed_entities:
   name: Set exposed entities

@@ -10,7 +10,7 @@
           "bridge_token": "Bridge token"
         },
         "data_description": {
-          "bridge_url": "The URL the Garmin watches can reach, for example https://garmin-bridge.example.com.",
+          "bridge_url": "The address of the bridge, for example the host name or the IP address of the computer that runs it.",
           "bridge_token": "The value of GARMIN_BRIDGE_TOKEN on the bridge."
         }
       }

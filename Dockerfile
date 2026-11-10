@@ -15,11 +15,11 @@ ENV PYTHONUNBUFFERED=1 \
 WORKDIR /app
 
 # Install the dependencies first so that the layer is cached.
-COPY bridge/pyproject.toml ./bridge/pyproject.toml
+COPY bridge/pyproject.toml bridge/README.md ./bridge/
 RUN python -m pip install --upgrade pip \
  && python -m pip install "fastapi>=0.110" "uvicorn>=0.27" "aiohttp>=3.9" "pydantic>=2.6"
 
-COPY bridge/src ./src
+COPY bridge/src ./bridge/src
 RUN python -m pip install --no-deps ./bridge
 
 # The bridge runs as an unprivileged user.
