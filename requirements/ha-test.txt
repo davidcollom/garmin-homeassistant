@@ -23,4 +23,4 @@ pytest-socket==0.7.0
 respx==0.21.1
 pycares==4.4.0
 acme==2.11.0
-josepy==1.14.0
+josepy==2.2.0
