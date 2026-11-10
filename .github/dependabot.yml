@@ -19,9 +19,20 @@ updates:
       # Assistant, which is done on purpose and not by a bot.
       - dependency-name: "homeassistant"
       - dependency-name: "pytest-homeassistant-custom-component"
-      # The Home Assistant test harness pins pytest 8.  A newer major release
-      # changes the plugin API and breaks the test run.
+      # The test harness pins the pytest plugins to exact versions, so a
+      # newer release of one of them cannot be installed next to it.
       - dependency-name: pytest
+      - dependency-name: pytest-asyncio
+      - dependency-name: pytest-aiohttp
+      - dependency-name: pytest-cov
+      - dependency-name: pytest-socket
+      - dependency-name: respx
+      # josepy 2 drops the API that acme uses, which breaks the import of
+      # hass_nabucasa.
+      - dependency-name: josepy
+        update-types:
+          - version-update:semver-major
+      - dependency-name: acme
         update-types:
           - version-update:semver-major
       # pycares 5 starts a background thread that outlives the event loop,
