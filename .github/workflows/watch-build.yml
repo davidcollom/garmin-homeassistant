@@ -1,95 +1,11 @@
-# Build the Connect IQ application and publish it.
-#
-# The Connect IQ SDK is proprietary and cannot be downloaded by a GitHub
-# hosted runner, so this workflow runs on a self hosted runner that has the
-# SDK installed.  See watch/README.md for the setup of the runner.
-#
-# The workflow produces the signed .iq files that people sideload and
-# attaches them to the GitHub release of the tag.  When the store keys are
-# configured the application is also submitted to the Connect IQ store.
 name: Watch application
 
-run-name: Build the watch application
-
 on:
-  push:
-    tags:
-      - "v*"
-  release:
-    types: [published]
   workflow_dispatch:
-
-permissions:
-  contents: write
 
 jobs:
   build:
     name: Build the watch application
-    # A runner with the label connectiq and the Connect IQ SDK installed.
     runs-on: [self-hosted, connectiq]
-    env:
-      MONKEYC: ${{ vars.MONKEYC }}
-      GARMIN_DEVELOPER_KEY: ${{ runner.temp }}/developer_key
-      GARMIN_STORE_API_KEY: ${{ secrets.GARMIN_STORE_API_KEY }}
-      GARMIN_STORE_DISTRIBUTION_KEY: ${{ runner.temp }}/distribution_key
     steps:
       - uses: actions/checkout@v4
-
-      - name: Write the developer key
-        if: env.GARMIN_DEVELOPER_KEY != ''
-        env:
-          KEY: ${{ secrets.GARMIN_DEVELOPER_KEY }}
-        run: |
-          # The key is stored base64 encoded, because it is a text file with
-          # a private key in it.
-          printf '%s' "$KEY" | base64 -d > "$GARMIN_DEVELOPER_KEY"
-          chmod 600 "$GARMIN_DEVELOPER_KEY"
-
-      - name: Build the sideload builds
-        run: ./watch/build.sh both
-
-      - name: Build the release builds
-        run: ./watch/build.sh both release
-
-      - name: Upload the sideload builds
-        uses: actions/upload-artifact@v4
-        with:
-          name: watch-app
-          path: watch/build/*.iq
-          if-no-files-found: error
-
-      - name: Attach the sideload builds to the release
-        if: github.event_name != 'workflow_dispatch'
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: ${{ github.ref_name }}
-          files: watch/build/*.iq
-          body: |
-            The Connect IQ application for the Venu 4 and the Edge 1040.
-
-            * `venu.iq` runs on the Venu 4 and shows the notifications with
-              the action buttons of the watch.
-            * `edge.iq` runs on the Edge 1040 and the Edge 1040 Solar, which
-              do not implement `Toybox.Notifications`.
-
-            Install the file on the watch with the instructions in
-            [docs/installation.md](https://github.com/${{ github.repository }}/blob/main/docs/installation.md).
-
-      - name: Write the distribution key
-        if: env.GARMIN_STORE_DISTRIBUTION_KEY != ''
-        env:
-          KEY: ${{ secrets.GARMIN_STORE_DISTRIBUTION_KEY }}
-        run: |
-          printf '%s' "$KEY" | base64 -d > "$GARMIN_STORE_DISTRIBUTION_KEY"
-          chmod 600 "$GARMIN_STORE_DISTRIBUTION_KEY"
-
-      - name: Submit the release builds to the Connect IQ store
-        if: env.GARMIN_STORE_API_KEY != '' && env.GARMIN_STORE_DISTRIBUTION_KEY != ''
-        run: |
-          for prg in watch/build/*.prg; do
-            echo "==> publishing ${prg}"
-            "${MONKEYC}" publish \
-              -o "${prg}" \
-              --api-key "${GARMIN_STORE_API_KEY}" \
-              --key "${GARMIN_STORE_DISTRIBUTION_KEY}"
-          done
