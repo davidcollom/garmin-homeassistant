@@ -14,13 +14,13 @@
 # The Home Assistant version is pinned as well.  The test harness of
 # pytest-homeassistant-custom-component tracks a beta release of Home
 # Assistant, and the beta behaves differently from the final release.
-pytest-homeassistant-custom-component==0.13.181
-homeassistant==2024.11.0
-pytest-asyncio==0.24.0
-pytest-aiohttp==1.0.5
-pytest-cov==5.0.0
-pytest-socket==0.7.0
-respx==0.21.1
-pycares==4.4.0
-acme==2.11.0
-josepy==1.14.0
+pytest-homeassistant-custom-component==0.13.375
+homeassistant==2026.11.0
+pytest-asyncio==1.4.1.post1
+pytest-aiohttp==1.1.1
+pytest-cov==7.1.0
+pytest-socket==0.8.1
+respx==0.23.1
+pycares==4.11.0
+acme==5.9.0
+josepy==2.2.0
